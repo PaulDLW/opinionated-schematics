@@ -1,0 +1,56 @@
+{
+  "name": "typescript-openapi-generator",
+  "version": "1.0.0",
+  "description": "",
+  "repository": "github:PaulDLW/opinionated-schematics",
+  "main": "index.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/github",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md"
+        }
+      ]
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "git-branch-is -r \"^((?!master).)*$\""
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@semantic-release/changelog": "^3.0.6",
+    "@semantic-release/git": "^7.0.18",
+    "@types/jest": "^24.0.23",
+    "@types/js-yaml": "^3.12.1",
+    "@types/node": "^12.12.14",
+    "git-branch-is": "^3.1.0",
+    "husky": "^3.1.0",
+    "jest": "^24.9.0",
+    "semantic-release": "^15.13.31",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.7.2"
+  }
+}
