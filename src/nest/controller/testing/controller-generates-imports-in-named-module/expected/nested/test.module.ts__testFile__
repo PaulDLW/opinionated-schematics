@@ -1,0 +1,9 @@
+import { Module } from '@nestjs/common';
+import { FooController } from '../foo/foo.controller';
+
+@Module({
+  providers: [],
+  exports: [],
+  controllers: [FooController]
+})
+export class TestModule {}

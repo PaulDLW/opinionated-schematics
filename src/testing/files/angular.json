@@ -1,0 +1,12 @@
+{
+  "newProjectRoot": "projects",
+  "projects": {
+    "test-project": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app"
+    }
+  },
+  "defaultProject": "test-project"
+}

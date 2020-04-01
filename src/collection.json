@@ -1,0 +1,23 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "component": {
+      "aliases": ["c"],
+      "factory": "./angular/component",
+      "schema": "./angular/component/schema.json",
+      "description": "Creates a component with a shallow-render unit-test"
+    },
+    "module": {
+      "aliases": ["m"],
+      "factory": "./angular/module",
+      "schema": "./angular/module/schema.json",
+      "description": "Creates a module"
+    },
+    "nest-controller": {
+      "aliases": ["n-c"],
+      "factory": "./nest/controller",
+      "schema": "./nest/controller/schema.json",
+      "description": "Creates a NestJS controller"
+    }
+  }
+}

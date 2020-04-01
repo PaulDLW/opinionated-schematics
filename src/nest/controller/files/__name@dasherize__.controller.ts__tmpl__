@@ -1,0 +1,9 @@
+import { Controller, Get } from '@nestjs/common';
+
+@Controller('<%= dasherize(name) %>')
+export class <%= classify(name) %>Controller {
+  @Get()
+  get() {
+    return {};
+  }
+}

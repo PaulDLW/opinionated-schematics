@@ -1,0 +1,16 @@
+import { FooComponent } from './foo.component';
+import { TestModule } from '../nested/test.module';
+import { Shallow } from 'shallow-render/dist';
+
+describe('FooComponent', () => {
+  let shallow: Shallow<FooComponent>;
+
+  beforeEach(() => {
+    shallow = new Shallow(FooComponent, TestModule);
+  });
+
+  it('should create', async () => {
+    const { find } = await shallow.render();
+    expect(find('p')).toHaveFoundOne();
+  });
+});

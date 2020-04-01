@@ -1,14 +1,27 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "lib": ["es5"],
-    "strict": true,
+    "baseUrl": "tsconfig",
+    "lib": ["es2018", "dom"],
     "declaration": true,
-    "outDir": "dist",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "rootDir": "src/",
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
     "sourceMap": true,
-    "downlevelIteration": true
+    "strictNullChecks": true,
+    "target": "es6",
+    "types": ["node"]
   },
-  "include": ["**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts", "dist", "src/test-data"]
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "src/**/files/**/*",
+    "src/**/testing/**/*",
+    "src/**/*.spec.ts"
+  ]
 }
