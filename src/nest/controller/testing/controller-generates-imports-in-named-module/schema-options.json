@@ -1,0 +1,7 @@
+{
+  "projectName": "testProject",
+  "path": "",
+  "name": "foo",
+  "moduleName": "nested/test.module.ts",
+  "moduleExport": false
+}

@@ -1,0 +1,13 @@
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+
+@Component({
+  selector: '<%= dasherize(project.prefix + '-' + name) %>',
+  templateUrl: './<%= dasherize(name) %><%= type ? '.' + dasherize(type): '' %>.html',
+  styleUrls: ['./<%= dasherize(name) %><%= type ? '.' + dasherize(type): '' %>.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class <%= classify(name) %><%= classify(type) %> implements OnInit {
+  constructor() {}
+
+  ngOnInit() {}
+}

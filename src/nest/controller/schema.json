@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsOpinionatedController",
+  "title": "Opinionated Controller Options Schema",
+  "type": "object",
+  "description": "Creates a new opinionated controller definition in the given or default project.",
+  "properties": {
+    "projectName": {
+      "type": "string",
+      "description": "The name of the project.",
+      "x-prompt": "What project should the controller be generated in? (Leave blank to use the default project)"
+    },
+    "path": {
+      "type": "string",
+      "format": "path",
+      "description": "The path at which to create the controller file, relative to the project root",
+      "x-prompt": "What path should the controller be generated at?"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the controller.",
+      "x-prompt": "What name would you like to use for the controller?"
+    },
+    "moduleName": {
+      "type": "string",
+      "description": "The declaring Module.",
+      "x-prompt": "What Module should the controller be declared in? (Leave blank to find the closest module)"
+    },
+    "moduleExport": {
+      "type": "boolean",
+      "description": "When true, the declaring Module exports this controller.",
+      "x-prompt": "Do you wish to export this controller?"
+    }
+  },
+  "required": ["projectName", "path", "name", "moduleName", "moduleExport"]
+}

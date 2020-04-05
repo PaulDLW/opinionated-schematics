@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "./dist/out-tsc/jest",
+    "module": "commonjs",
+    "types": ["jest", "node"],
+    "strictNullChecks": false
+  },
+  "files": ["./jest-test-setup.ts"],
+  "include": ["**/*.spec.ts"],
+  "exclude": [
+    "./src/**/files/**/*",
+    "./src/**/testing/**/*",
+    "./src/testing/files/**/*"
+  ]
+}

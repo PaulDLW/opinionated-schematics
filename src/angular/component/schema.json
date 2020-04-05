@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsOpinionatedComponent",
+  "title": "Opinionated Component Options Schema",
+  "type": "object",
+  "description": "Creates a new opinionated component definition in the given or default project.",
+  "properties": {
+    "projectName": {
+      "type": "string",
+      "description": "The name of the project.",
+      "x-prompt": "What project should the component be generated in? (Leave blank to use the default project)"
+    },
+    "path": {
+      "type": "string",
+      "format": "path",
+      "description": "The path at which to create the component file, relative to the project root",
+      "x-prompt": "What path should the component be generated at?"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the component.",
+      "x-prompt": "What name would you like to use for the component?"
+    },
+    "moduleName": {
+      "type": "string",
+      "description": "The declaring NgModule.",
+      "x-prompt": "What NgModule should the component be declared in? (Leave blank to find the closest module)"
+    },
+    "moduleExport": {
+      "type": "boolean",
+      "description": "When true, the declaring NgModule exports this component.",
+      "x-prompt": "Do you wish to export this component?"
+    }
+  },
+  "required": ["projectName", "path", "name", "moduleName", "moduleExport"]
+}
