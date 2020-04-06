@@ -10,7 +10,7 @@
   ],
   "main": "index.ts",
   "files": [
-    "dist"
+    "src"
   ],
   "scripts": {
     "test": "jest",
