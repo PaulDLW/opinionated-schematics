@@ -10,7 +10,9 @@ export function findModule(tree: Tree, fullPath: string): string {
 
   const files = dir.subfiles;
 
-  const moduleStr = files.find(file => file.includes('module.ts'));
+  const moduleStr = files.find(
+    (file) => file.includes('module.ts') && !file.includes('rout')
+  );
 
   if (!!moduleStr) {
     return toPosix(path.join(dir.path, moduleStr).substring(1));
@@ -130,8 +132,8 @@ function insertBuildingBlock(
 
   let props = moduleContent.split(/(?<=\])/g);
 
-  if (props.some(prop => prop.includes(modulePropName))) {
-    props = props.map(prop => {
+  if (props.some((prop) => prop.includes(modulePropName))) {
+    props = props.map((prop) => {
       if (isNullOrWhiteSpace(prop)) {
         return '';
       }
@@ -177,7 +179,7 @@ function insertBuildingBlock(
 }
 
 function getInsertIndex(props: string[]) {
-  if (props.some(prop => prop.includes('bootstrap'))) {
+  if (props.some((prop) => prop.includes('bootstrap'))) {
     return props.length - 1;
   } else {
     return props.length;
