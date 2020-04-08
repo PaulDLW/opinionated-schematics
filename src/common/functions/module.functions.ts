@@ -122,13 +122,13 @@ function insertBuildingBlock(
     return content;
   }
 
-  const startSplitCharIndex = content.indexOf('Module(') + 7;
-  const endSplitCharIndex = content.lastIndexOf(')');
+  const startSplitCharIndex = content.indexOf('Module(') + 8;
+  const endSplitCharIndex = content.lastIndexOf(')') - 1;
 
-  const moduleContent = content
-    .substring(startSplitCharIndex, endSplitCharIndex)
-    .replace('{', '')
-    .replace('}', '');
+  const moduleContent = content.substring(
+    startSplitCharIndex,
+    endSplitCharIndex
+  );
 
   let props = moduleContent.split(/(?<=\])/g);
 
