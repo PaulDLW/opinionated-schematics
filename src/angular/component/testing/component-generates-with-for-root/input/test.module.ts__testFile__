@@ -1,0 +1,14 @@
+import { Test1Component } from './test1.component';
+import { Test2Component } from './test2.component';
+import { TestForRootModule } from './test-for-root.module';
+
+@NgModule({
+  declarations: [Test1Component, Test2Component],
+  imports: [
+    TestForRootModule.forRoot({
+      testProp1: 'testValue1',
+      testProp2: 'testValue2'
+    })
+  ]
+})
+export class TestModule {}
