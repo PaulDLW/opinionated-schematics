@@ -1,20 +1,20 @@
-import { virtualFs } from '@angular-devkit/core';
-import { HostTree } from '@angular-devkit/schematics';
+import { virtualFs } from "@angular-devkit/core";
+import { HostTree } from "@angular-devkit/schematics";
 import {
   SchematicTestRunner,
-  UnitTestTree
-} from '@angular-devkit/schematics/testing';
-import * as fs from 'fs';
-import * as path from 'path';
-import { of } from 'rxjs';
-import { TestFile } from './models/test-file.model';
+  UnitTestTree,
+} from "@angular-devkit/schematics/testing";
+import * as fs from "fs";
+import * as path from "path";
+import { of } from "rxjs";
+import { TestFile } from "./models/test-file.model";
 
-const TEST_FILE_NAME = '__testFile__';
+const TEST_FILE_NAME = "__testFile__";
 
 export function createTestRunner(dirName: string) {
-  const collectionPath = path.join(dirName, '../../../collection.json');
+  const collectionPath = path.join(dirName, "../../../collection.json");
 
-  return new SchematicTestRunner('schematics', collectionPath);
+  return new SchematicTestRunner("schematics", collectionPath);
 }
 
 export function createTestWorkspace(
@@ -30,31 +30,35 @@ export function createTestWorkspace(
 
   const angularJsonContent = fs
     .readFileSync(
-      path.join(dirName, '../../..', 'testing', 'files', 'angular.json')
+      path.join(dirName, "../../..", "testing", "files", "angular.json")
     )
     .toString();
 
-  tree.create('angular.json', angularJsonContent);
+  tree.create("angular.json", angularJsonContent);
 
-  addInputFilesToTree(tree, path.join(dirName, testName, 'input'));
+  addInputFilesToTree(tree, path.join(dirName, testName, "input"));
 
   return of(tree);
 }
 
 export function getNumberOfFiles(filesPath: string) {
-  const filePaths = fs.readdirSync(filesPath);
+  if (fs.existsSync(filesPath)) {
+    const filePaths = fs.readdirSync(filesPath);
 
-  return filePaths.reduce((count, file) => {
-    const fullPath = path.join(filesPath, file);
+    return filePaths.reduce((count, file) => {
+      const fullPath = path.join(filesPath, file);
 
-    if (fs.lstatSync(fullPath).isDirectory()) {
-      count += getNumberOfFiles(fullPath);
-    } else {
-      count += 1;
-    }
+      if (fs.lstatSync(fullPath).isDirectory()) {
+        count += getNumberOfFiles(fullPath);
+      } else {
+        count += 1;
+      }
 
-    return count;
-  }, 0);
+      return count;
+    }, 0);
+  } else {
+    return 0;
+  }
 }
 
 export function getFiles(filesPath: string) {
@@ -67,9 +71,9 @@ export function getFiles(filesPath: string) {
       filesArr = filesArr.concat(getFiles(fullPath));
     } else {
       filesArr.push({
-        fileName: path.basename(fullPath).replace(TEST_FILE_NAME, ''),
-        filePath: fullPath.replace(TEST_FILE_NAME, ''),
-        fileContents: fs.readFileSync(fullPath).toString()
+        fileName: path.basename(fullPath).replace(TEST_FILE_NAME, ""),
+        filePath: fullPath.replace(TEST_FILE_NAME, ""),
+        fileContents: fs.readFileSync(fullPath).toString(),
       });
     }
 
@@ -89,16 +93,16 @@ function addInputFilesToTree(
   if (fs.existsSync(dirName)) {
     const files = fs.readdirSync(dirName);
 
-    files.forEach(filePath => {
+    files.forEach((filePath) => {
       const fullFilePath = path.join(dirName, filePath);
 
       if (!fs.lstatSync(fullFilePath).isDirectory()) {
         const fileContents = fs.readFileSync(fullFilePath).toString();
 
-        const relativePath = fullFilePath.replace(rootDir + path.sep, '');
+        const relativePath = fullFilePath.replace(rootDir + path.sep, "");
 
         tree.create(
-          path.join('src', 'app', relativePath.replace(TEST_FILE_NAME, '')),
+          path.join("src", "app", relativePath.replace(TEST_FILE_NAME, "")),
           fileContents
         );
       } else {

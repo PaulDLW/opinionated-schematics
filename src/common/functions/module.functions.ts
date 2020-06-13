@@ -1,9 +1,9 @@
-import * as path from 'path';
-import { Tree } from '@angular-devkit/schematics';
-import { strings, relative } from '@angular-devkit/core';
-import { toPosix } from './path-utils.functions';
-import { BuildingBlockOptions } from '../models/building-block-options.model';
-import { prettier } from './prettier.functions';
+import { strings } from "@angular-devkit/core";
+import { Tree } from "@angular-devkit/schematics";
+import * as path from "path";
+import { BuildingBlockOptions } from "../models/building-block-options.model";
+import { toPosix } from "./path-utils.functions";
+import { prettier } from "./prettier.functions";
 
 export function findModule(tree: Tree, fullPath: string): string {
   const dir = tree.getDir(fullPath);
@@ -11,7 +11,7 @@ export function findModule(tree: Tree, fullPath: string): string {
   const files = dir.subfiles;
 
   const moduleStr = files.find(
-    (file) => file.includes('module.ts') && !file.includes('rout')
+    (file) => file.includes("module.ts") && !file.includes("rout")
   );
 
   if (!!moduleStr) {
@@ -21,14 +21,14 @@ export function findModule(tree: Tree, fullPath: string): string {
   const parentDir = dir.parent;
 
   if (parentDir === null) {
-    return '';
+    return "";
   }
 
   return findModule(tree, parentDir.path);
 }
 
 export function getModuleName(filePath: string) {
-  const baseNameSplit = path.basename(filePath).split('.');
+  const baseNameSplit = path.basename(filePath).split(".");
 
   return strings.classify(baseNameSplit[0]);
 }
@@ -45,7 +45,7 @@ export function addBuildingBlockToModuleFile(
         path.relative(
           options.modulePath.replace(
             `${options.moduleName?.toLocaleLowerCase()}.module.ts`,
-            ''
+            ""
           ),
           options.fullPath
         )
@@ -70,7 +70,7 @@ function insertImportStatement(
   relativePath: string,
   options: BuildingBlockOptions
 ) {
-  let contentSplit = content.split('\n');
+  let contentSplit = content.split("\n");
 
   const importLines = contentSplit.reduce((importLines, line, index) => {
     if (new RegExp(/from '.*';/).test(line)) {
@@ -82,22 +82,26 @@ function insertImportStatement(
 
   const lineToAddImport = importLines[importLines.length - 1] + 1;
 
+  console.log("relativePath: ", relativePath);
+
+  const importFilePath = `${
+    relativePath.startsWith("..") ? "" : "./"
+  }${relativePath}${!!relativePath ? "/" : ""}${options.name}.${options.type}`;
+
   const importStatement = `import { ${strings.classify(
-    options.name + '-' + options.type
-  )} } from '${relativePath.startsWith('..') ? '' : './'}${relativePath}/${
-    options.name
-  }.${options.type}';`;
+    options.name + "-" + options.type
+  )} } from '${importFilePath}';`;
 
   contentSplit.splice(lineToAddImport, 0, importStatement);
 
-  return contentSplit.join('\n');
+  return contentSplit.join("\n");
 }
 
 function insertBuildingBlockToModule(
   content: string,
   options: BuildingBlockOptions
 ) {
-  const buildingBlockName = strings.classify(options.name + '-' + options.type);
+  const buildingBlockName = strings.classify(options.name + "-" + options.type);
   return insertBuildingBlock(
     content,
     buildingBlockName,
@@ -109,8 +113,8 @@ function insertBuildingBlockToModuleExports(
   content: string,
   options: BuildingBlockOptions
 ) {
-  const buildingBlockName = strings.classify(options.name + '-' + options.type);
-  return insertBuildingBlock(content, buildingBlockName, 'exports');
+  const buildingBlockName = strings.classify(options.name + "-" + options.type);
+  return insertBuildingBlock(content, buildingBlockName, "exports");
 }
 
 function insertBuildingBlock(
@@ -122,8 +126,8 @@ function insertBuildingBlock(
     return content;
   }
 
-  const startSplitCharIndex = content.indexOf('Module(') + 8;
-  const endSplitCharIndex = content.lastIndexOf(')') - 1;
+  const startSplitCharIndex = content.indexOf("Module(") + 8;
+  const endSplitCharIndex = content.lastIndexOf(")") - 1;
 
   const moduleContent = content.substring(
     startSplitCharIndex,
@@ -135,18 +139,18 @@ function insertBuildingBlock(
   if (props.some((prop) => prop.includes(modulePropName))) {
     props = props.map((prop) => {
       if (isNullOrWhiteSpace(prop)) {
-        return '';
+        return "";
       }
 
-      let [key, values] = prop.split(':');
+      let [key, values] = prop.split(":");
 
-      let valuesJoined = '';
+      let valuesJoined = "";
 
       if (key.includes(modulePropName)) {
         const valuesSplit = values
-          .replace(' [', '')
-          .replace(']', '')
-          .split(', ');
+          .replace(" [", "")
+          .replace("]", "")
+          .split(", ");
 
         const valuesSplitFiltered = valuesSplit.reduce((array, value) => {
           if (!isNullOrWhiteSpace(value)) {
@@ -158,7 +162,7 @@ function insertBuildingBlock(
 
         valuesSplitFiltered.push(buildingBlockName);
 
-        valuesJoined = valuesSplitFiltered.join(', ');
+        valuesJoined = valuesSplitFiltered.join(", ");
 
         return `${key}: [${valuesJoined}]`;
       } else {
@@ -171,15 +175,15 @@ function insertBuildingBlock(
     props.splice(
       insertIndex,
       0,
-      `, ${modulePropName ?? ''}: [${buildingBlockName}]`
+      `, ${modulePropName ?? ""}: [${buildingBlockName}]`
     );
   }
 
-  return content.replace(moduleContent, props.join(''));
+  return content.replace(moduleContent, props.join(""));
 }
 
 function getInsertIndex(props: string[]) {
-  if (props.some((prop) => prop.includes('bootstrap'))) {
+  if (props.some((prop) => prop.includes("bootstrap"))) {
     return props.length - 1;
   } else {
     return props.length;
@@ -191,5 +195,5 @@ function isNullOrWhiteSpace(value: string) {
     return true;
   }
 
-  return value.replace(/\s/g, '').length == 0;
+  return value.replace(/\s/g, "").length == 0;
 }

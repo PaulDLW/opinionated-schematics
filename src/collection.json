@@ -13,6 +13,12 @@
       "schema": "./angular/module/schema.json",
       "description": "Creates a module"
     },
+    "feature-module": {
+      "aliases": ["fm"],
+      "factory": "./angular/feature-module",
+      "schema": "./angular/feature-module/schema.json",
+      "description": "Creates a feature module"
+    },
     "nest-controller": {
       "aliases": ["n-c"],
       "factory": "./nest/controller",
