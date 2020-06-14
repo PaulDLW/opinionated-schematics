@@ -1,0 +1,16 @@
+import { FooBarComponent } from './foo-bar.component';
+import { FooBarModule } from '../../foo-bar.module';
+import { Shallow } from 'shallow-render/dist';
+
+describe('FooBarComponent', () => {
+  let shallow: Shallow<FooBarComponent>;
+
+  beforeEach(() => {
+    shallow = new Shallow(FooBarComponent, FooBarModule);
+  });
+
+  it('should create', async () => {
+    const { find } = await shallow.render();
+    expect(find('p')).toHaveFoundOne();
+  });
+});

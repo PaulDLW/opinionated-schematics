@@ -1,3 +1,3 @@
-export function toPosix(path: string) {
-  return path.replace(/\\/g, '/');
+export function toPosixFileSeparator(path: string) {
+  return path.replace(/\\/g, "/");
 }

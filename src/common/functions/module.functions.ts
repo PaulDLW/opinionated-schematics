@@ -2,7 +2,7 @@ import { strings } from "@angular-devkit/core";
 import { Tree } from "@angular-devkit/schematics";
 import * as path from "path";
 import { BuildingBlockOptions } from "../models/building-block-options.model";
-import { toPosix } from "./path-utils.functions";
+import { toPosixFileSeparator } from "./path-utils.functions";
 import { prettier } from "./prettier.functions";
 
 export function findModule(tree: Tree, fullPath: string): string {
@@ -15,7 +15,7 @@ export function findModule(tree: Tree, fullPath: string): string {
   );
 
   if (!!moduleStr) {
-    return toPosix(path.join(dir.path, moduleStr).substring(1));
+    return toPosixFileSeparator(path.join(dir.path, moduleStr).substring(1));
   }
 
   const parentDir = dir.parent;
@@ -41,14 +41,13 @@ export function addBuildingBlockToModuleFile(
     let content = tree.read(options.modulePath)?.toString();
 
     if (!!content) {
-      const relativePath = toPosix(
-        path.relative(
-          options.modulePath.replace(
-            `${options.moduleName?.toLocaleLowerCase()}.module.ts`,
-            ""
-          ),
-          options.fullPath
-        )
+      const modulePathWithoutFileName = options.modulePath.substring(
+        0,
+        options.modulePath.lastIndexOf("/")
+      );
+
+      const relativePath = toPosixFileSeparator(
+        path.relative(modulePathWithoutFileName, options.fullPath)
       );
 
       content = insertImportStatement(content, relativePath, options);
