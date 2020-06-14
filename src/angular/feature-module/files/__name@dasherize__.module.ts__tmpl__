@@ -1,0 +1,16 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { <%= classify(name.split('-')[0]) %>Component } from './pages/<%= name.split('-')[0] %>/<%= name.split('-')[0] %>.component';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: <%= classify(name.split('-')[0]) %>Component
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class <%= classify(name) %><%= classify(type) %> {}

@@ -1,34 +1,35 @@
-import { BuildingBlockOptions } from '../models/building-block-options.model';
+import { Path, strings } from "@angular-devkit/core";
 import {
-  Tree,
-  chain,
-  noop,
-  mergeWith,
   apply,
-  url,
+  branchAndMerge,
+  chain,
+  mergeWith,
+  move,
+  noop,
   template,
-  move
-} from '@angular-devkit/schematics';
-import * as path from 'path';
-import { Path, strings } from '@angular-devkit/core';
+  Tree,
+  url,
+} from "@angular-devkit/schematics";
+import * as path from "path";
+import { BuildingBlockOptions } from "../models/building-block-options.model";
 import {
-  getProject,
-  getDefaultProject,
-  getWorkspace
-} from './project.functions';
-import {
+  addBuildingBlockToModuleFile,
   findModule as findModulePath,
   getModuleName,
-  addBuildingBlockToModuleFile
-} from './module.functions';
-import { toPosix as toPosixFileSeparator } from './path-utils.functions';
+} from "./module.functions";
+import { toPosix as toPosixFileSeparator } from "./path-utils.functions";
+import {
+  getDefaultProject,
+  getProject,
+  getWorkspace,
+} from "./project.functions";
 
 export function createBuildingBlock(options: BuildingBlockOptions) {
   return () => {
     return chain([
       populateOptions(options),
       addBuildingBlockToModule(options),
-      generateFiles(options)
+      generateFiles(options),
     ]);
   };
 }
@@ -45,24 +46,30 @@ function populateOptions(options: BuildingBlockOptions) {
 
     options.project = project;
 
-    options.sourceRoot = project.sourceRoot ?? '';
-    options.projectType = project.projectType === 'application' ? 'app' : 'lib';
+    options.sourceRoot = project.sourceRoot ?? "";
+    options.projectType = project.projectType === "application" ? "app" : "lib";
 
-    options.fullPath = toPosixFileSeparator(
-      path.join(
-        options.sourceRoot,
-        options.projectType,
-        options.path,
-        options.name
-      )
-    ) as Path;
+    if (!options.flatFolder) {
+      options.fullPath = toPosixFileSeparator(
+        path.join(
+          options.sourceRoot,
+          options.projectType,
+          options.path,
+          options.name
+        )
+      ) as Path;
+    } else {
+      options.fullPath = toPosixFileSeparator(
+        path.join(options.sourceRoot, options.projectType, options.path)
+      ) as Path;
+    }
     return tree;
   };
 }
 
 function addBuildingBlockToModule(options: BuildingBlockOptions) {
   return (tree: Tree) => {
-    if (options.modulePropName === null || options.type === 'module') {
+    if (!options.modulePropName) {
       return noop();
     }
 
@@ -85,7 +92,7 @@ function addBuildingBlockToModule(options: BuildingBlockOptions) {
 
     options.moduleRelativePath = toPosixFileSeparator(
       path.relative(options.fullPath, options.modulePath)
-    ).replace('.ts', '');
+    ).replace(".ts", "");
 
     tree = addBuildingBlockToModuleFile(tree, options);
 
@@ -96,21 +103,21 @@ function addBuildingBlockToModule(options: BuildingBlockOptions) {
 function generateFiles(options: BuildingBlockOptions) {
   return (tree: Tree) => {
     if (
-      options.type === 'module' &&
+      options.type === "module" &&
       tree.exists(path.join(options.fullPath, `${options.name}.module.ts`))
     ) {
       return noop();
     }
 
-    return mergeWith(
-      apply(url('./files' as Path), [
-        template({
-          tmpl: '',
-          ...strings,
-          ...options
-        }),
-        move(options.fullPath)
-      ])
-    );
+    const templateSource = apply(url("./files" as Path), [
+      template({
+        tmpl: "",
+        ...strings,
+        ...options,
+      }),
+      move(options.fullPath),
+    ]);
+
+    return chain([branchAndMerge(chain([mergeWith(templateSource)]))]);
   };
 }

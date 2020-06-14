@@ -1,0 +1,9 @@
+import { NgModule } from '@angular/core';
+import { FooComponent } from './pages/foo/foo.component';
+import { FooRoutingModule } from './foo-routing.module';
+
+@NgModule({
+  declarations: [FooComponent],
+  imports: [FooRoutingModule]
+})
+export class FooModule {}

@@ -1,8 +1,8 @@
-import { Path } from '@angular-devkit/core';
+import { Path } from "@angular-devkit/core";
 import {
+  WorkspaceProject,
   WorkspaceSchema,
-  WorkspaceProject
-} from '@angular-devkit/core/src/experimental/workspace';
+} from "@angular-devkit/core/src/experimental/workspace";
 
 export interface BuildingBlockOptions {
   workspace: WorkspaceSchema;
@@ -22,6 +22,7 @@ export interface BuildingBlockOptions {
   moduleRelativePath?: string;
   type?: string;
   folderName?: string;
+  flatFolder: boolean;
   //   tags?: string;
   //   parsedTags: string[];
   //   appProjectRoot?: string;
