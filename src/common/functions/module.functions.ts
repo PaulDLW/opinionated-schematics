@@ -82,8 +82,6 @@ function insertImportStatement(
 
   const lineToAddImport = importLines[importLines.length - 1] + 1;
 
-  console.log("relativePath: ", relativePath);
-
   const importFilePath = `${
     relativePath.startsWith("..") ? "" : "./"
   }${relativePath}${!!relativePath ? "/" : ""}${options.name}.${options.type}`;
