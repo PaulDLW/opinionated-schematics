@@ -15,6 +15,8 @@ export default function(options: BuildingBlockOptions): Rule {
     flatFolder: true,
   };
 
+  const originalName = options.name;
+
   const featureModuleOptions = {
     ...options,
     path: `${options.path}/${options.name}` as Path,
@@ -22,6 +24,7 @@ export default function(options: BuildingBlockOptions): Rule {
     type: "module",
     modulePropName: "imports",
     flatFolder: true,
+    originalName,
   };
 
   const componentOptions = {

@@ -17,7 +17,7 @@ import {
   findModule as findModulePath,
   getModuleName,
 } from "./module.functions";
-import { toPosix as toPosixFileSeparator } from "./path-utils.functions";
+import { toPosixFileSeparator } from "./path-utils.functions";
 import {
   getDefaultProject,
   getProject,
@@ -76,11 +76,13 @@ function addBuildingBlockToModule(options: BuildingBlockOptions) {
     if (!options.moduleName) {
       options.modulePath = findModulePath(tree, options.fullPath);
     } else {
-      options.modulePath = path.join(
-        options.sourceRoot,
-        options.projectType,
-        options.path,
-        options.moduleName
+      options.modulePath = toPosixFileSeparator(
+        path.join(
+          options.sourceRoot,
+          options.projectType,
+          options.path,
+          options.moduleName
+        )
       );
     }
 

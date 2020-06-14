@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { <%= classify(originalName) %>Component } from './pages/<%= originalName %>/<%= originalName %>.component';
+import { FooBarComponent } from './pages/foo-bar/foo-bar.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: <%= classify(originalName) %>Component
+    component: FooBarComponent
   }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class <%= classify(name) %><%= classify(type) %> {}
+export class FooBarRoutingModule {}
